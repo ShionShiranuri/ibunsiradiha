@@ -48,14 +48,15 @@ nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
 .tag.jiji{background:#20323d;color:#7fd4ff;border-color:#2e5568}
 .wind{color:var(--wind)}.thun{color:var(--thunder)}.ice{color:var(--ice)}
 .tk{color:#7fa8ff}.hl{color:#6fe0a8}.dp{color:#ff9a9a}
-.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:6px;margin-top:7px}
-.shot{display:block;border:1px solid #45566f;border-radius:6px;overflow:hidden;background:#070b11;cursor:zoom-in;text-decoration:none}
-.shot img{display:block;width:100%;height:clamp(60px,11.7vh,183px);object-fit:contain;background:#0a0f18}
-.shot span{display:block;padding:3px 6px;font-size:clamp(9px,.66vw,12px);font-weight:800;color:#cfe0f2;background:#151f2e;line-height:1.25}
-.shot.big img{height:clamp(100px,25.0vh,406px)}
-.shot.med img{height:clamp(85px,19.5vh,289px)}
-.shot.sm img{height:clamp(70px,13.1vh,202px)}
+.card{display:flex;flex-direction:column;flex:0 0 auto}
+.card.grow{flex:1 1 auto}
+.card.imgcard,.card:has(.shot),.card:has(.cardshots){flex:1 1 auto;min-height:0}
+.shots{flex:1 1 auto;min-height:66px;display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));grid-auto-rows:minmax(0,1fr);gap:6px;margin-top:7px;align-items:stretch}
+.shot{display:flex;flex-direction:column;min-height:0;border:1px solid #45566f;border-radius:6px;overflow:hidden;background:#070b11;cursor:zoom-in;text-decoration:none}
+.shot img{flex:1 1 auto;min-height:0;display:block;width:100%;height:auto;object-fit:contain;background:#0a0f18}
+.shot span{flex:none;display:block;padding:3px 6px;font-size:clamp(9px,.66vw,12px);font-weight:800;color:#cfe0f2;background:#151f2e;line-height:1.25}
 .shot.full{grid-column:1/-1}
+.card > .shot{flex:1 1 auto;min-height:80px;margin-top:7px}
 .ptable{width:100%;border-collapse:collapse;margin:5px 0 0;font-size:clamp(8.5px,.74vw,13px)}
 .ptable th,.ptable td{border:1px solid var(--line);padding:3px 6px;text-align:left;vertical-align:top}
 .ptable th{background:#1b2130;color:var(--sub);font-size:.92em;font-weight:800}
@@ -70,8 +71,6 @@ nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
   .card h2{font-size:clamp(10.5px,.9vw,15px);margin-bottom:3px}
   .card ul{padding-left:15px}.card li{margin:2px 0}
   .card{padding:5px 8px}
-  .shot img{height:9.4vh}.shot.sm img{height:10.9vh}.shot.med img{height:14.8vh}.shot.big img{height:19.5vh}
-  .shot span{font-size:8.5px;padding:2px 4px}
   .ptable th,.ptable td{padding:2px 4px}
 }
 @media(max-width:900px),(max-height:620px){
@@ -159,27 +158,7 @@ nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
         <p><b>ダストブロワー</b>＝ノックバック、アムレン／堅実魔で無効。<b>2回</b>来る（リキャ間に合う）。</p>
         <p><b>水洗い</b>＝重い全体。アドル／牽制／リプライザル。</p>
       </article>
-      <article class="card grow"><h2>すべってシャンプーボム</h2>
-        <p>タンク以外ランダム1名へ<b>直線頭割り</b>。並びは<b>先頭 <span class="tk">T</span> ＞ 他 ＞ 対象者</b>。</p>
-        <ul>
-          <li><b class="thun">雷</b>：着弾後にX字＋各自小円 → <b>ボス正面=<span class="tk">T</span>／背後=<span class="hl">H</span>／左右=<span class="dp">D</span></b></li>
-          <li><b class="wind">風</b>：対象決定時にノックバック → <b>アムレン／堅実魔でボス直下</b>、着弾後ドーナツ</li>
-          <li><b class="ice">氷</b>：<span class="danger">止まっていると凍結</span> → <b>動きながら</b>受け、その後は斜めへ</li>
-        </ul>
-        <p><b>カーペットビーター</b>＝T強攻撃。<b>水拭き</b>＝その場で正面90度×2→225度を薙ぐ。<b>最初に倒れた側が安置</b>。当たった玉は本体属性に塗り替わる。</p>
-      </article>
-    </div>
-
-    <div class="col">
-      <article class="card"><h2>ポンポン① 3個＋水拭き <span class="tag g8">game8式</span></h2>
-        <p>水拭きで<b>2個が風になり安置が消える</b> → 頭割りで<b>緑を1個だけ青（氷）に塗り替えて安置を作る</b>。</p>
-        <div class="flow"><span class="step">頭割りで緑を巻き込む</span><span class="arrow">→</span><span class="step">Tは残った風ポンへ誘導</span><span class="arrow">→</span><span class="step">みんなで爆発</span></div>
-        <ul><li>頭割り位置：<b>風が残れば南／雷が残れば北</b></li></ul>
-      </article>
-      <article class="card grow"><h2>ポンポン② 4個・線誘導 <span class="tag jiji">じじー式</span> <span class="tag hot">最難所</span></h2><p>全員に線＋マーカー。消えると<b>線の方向へ玉が転がる</b>。じじー式は<b>本体の属性に関係なく1ルール</b>。</p><ul><li><b class="thun">雷（黄）＝中央から外周へ、まっすぐ引く</b>（玉が角なら斜め外／縦横なら真っ直ぐ外）</li><li><b class="ice">氷（青）＝時計回りに斜めへ引く</b>。玉の<b>斜めに立って</b>線を伸ばす</li><li><span class="danger">※氷は角（コーナー）へ持っていくのは絶対NG</span>。角になりそうならさらに時計回りにずらす</li><li>方向さえ合っていれば<b>距離は不問</b>（マス目の交点に乗らなくてよい）</li><li>ルールは単純だが<b>安置が狭い</b>ので、近接は無理に殴らない</li></ul><a class="shot full big" data-zoom><img src="assets/sildihn/02-silkie-pom2-jizi-chart.png" alt="じじー式チャート"><span>じじー式 公式チャート／左列=<b>ボス氷</b>・右列=<b>ボス風</b>、上段=<b>四角</b>・下段=<b>十字</b></span></a></article>
-    </div>
-
-    <div class="col">
+      
       <article class="card"><h2>ポンポン③ 8個＋洗い壺 <span class="tag g8">game8式</span></h2>
         <p><b>2行×4列の8個</b> → <b>壺3個が北→南へ直進</b>し通った<b>3列＝6個が無属性化</b>。<b>壺が来ない1列の2個</b>だけ避ける。</p>
         <div class="flow"><span class="step">北に壺が無い列へ</span><span class="arrow">→</span><span class="step">残り2個を回避</span><span class="arrow">→</span><span class="step">6個を氷化</span><span class="arrow">→</span><span class="step">北壁際の足元</span></div>
@@ -191,7 +170,30 @@ nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
           <a class="shot" data-zoom><img src="assets/sildihn/05-silkie-pom3-iced.png" alt="氷化"><span>③6個氷化後</span></a>
         </div>
       </article>
-      <article class="card grow"><h2>ポンポン④ 氷4個・縦一列 <span class="tag jiji">じじー式</span></h2><p>前段に<b>ダストブロワー</b>（アムレン／堅実魔）。氷4個が<b>中央の縦一列</b>で出現、全員に線。玉は線の方向へ<b>一定距離だけ跳ぶ</b>。</p><ul><li>①全員<b>ボス背面＝北のマス目の交点</b>に集合（線が真北を向き斜めにならない）</li><li>②<span class="danger">⚠倒れたら即、倒れた側へ一マス⚠</span>＝<b>左に倒れたら一つ左の交点／右なら一つ右の交点</b></li><li>③着地する玉の円を踏まないよう<b>北へ一マス</b>（すぐ動くとボス範囲を踏むので<b>一拍おく</b>）</li><li>④最後は<b>ボス正面＝北、ヒットボックス内</b>に集合</li><li>玉が薙ぎ払いに当たると<b>風に塗り替わって即死</b>。それを避けるための横ズラし</li></ul><a class="shot full" data-zoom><img src="assets/sildihn/06-silkie-pom4-layout.png" alt="ポン4配置"><span>中央の縦一列／<b>左に倒れたので一つ左のマスの交点へ</b>（右なら右）</span></a></article>
+    </div>
+
+    <div class="col">
+      
+      <article class="card"><h2>すべってシャンプーボム</h2>
+        <p>非T1名へ<b>直線頭割り</b>。並び＝<b>先頭 <span class="tk">T</span> ＞ 他 ＞ 対象者</b>。</p>
+        <ul>
+          <li><b class="thun">雷</b>：着弾後にX字＋各自小円 → <b>ボス正面=<span class="tk">T</span>／背後=<span class="hl">H</span>／左右=<span class="dp">D</span></b></li>
+          <li><b class="wind">風</b>：ノックバック → <b>アムレン／堅実魔でボス直下</b>、着弾後ドーナツ</li>
+          <li><b class="ice">氷</b>：<span class="danger">止まっていると凍結</span> → <b>動きながら</b>受け、その後は斜めへ</li>
+        </ul>
+        <p><b>カーペットビーター</b>＝T強攻撃。<b>水拭き</b>＝正面90度×2→225度。<b>最初に倒れた側が安置</b>、当たった玉は本体属性になる。</p>
+      </article>
+      <article class="card grow"><h2>ポンポン② 4個・線誘導 <span class="tag jiji">じじー式</span> <span class="tag hot">最難所</span></h2><p>全員に線＋マーカー。消えると<b>線の方向へ玉が転がる</b>。じじー式は<b>本体の属性に関係なく1ルール</b>。</p><ul><li><b class="thun">雷（黄）＝中央から外周へ、まっすぐ引く</b>（玉が角なら斜め外／縦横なら真っ直ぐ外）</li><li><b class="ice">氷（青）＝時計回りに斜めへ引く</b>。玉の<b>斜めに立って</b>線を伸ばす</li><li><span class="danger">※氷は角（コーナー）へ持っていくのは絶対NG</span>。角になりそうならさらに時計回りにずらす</li><li>方向さえ合っていれば<b>距離は不問</b>（マス目の交点に乗らなくてよい）</li><li>ルールは単純だが<b>安置が狭い</b>ので、近接は無理に殴らない</li></ul><a class="shot full big" data-zoom><img src="assets/sildihn/02-silkie-pom2-jizi-chart.png" alt="じじー式チャート"><span>じじー式 公式チャート／左列=<b>ボス氷</b>・右列=<b>ボス風</b>、上段=<b>四角</b>・下段=<b>十字</b></span></a></article>
+    </div>
+
+    <div class="col">
+      
+      <article class="card"><h2>ポンポン① 3個＋水拭き <span class="tag g8">game8式</span></h2>
+        <p>水拭きで<b>2個が風になり安置が消える</b> → 頭割りで<b>緑を1個だけ青（氷）に塗り替えて安置を作る</b>。</p>
+        <div class="flow"><span class="step">頭割りで緑を巻き込む</span><span class="arrow">→</span><span class="step">Tは残った風ポンへ誘導</span><span class="arrow">→</span><span class="step">みんなで爆発</span></div>
+        <ul><li>頭割り位置：<b>風が残れば南／雷が残れば北</b></li></ul>
+      </article>
+      <article class="card grow"><h2>ポンポン④ 氷4個・縦一列 <span class="tag jiji">じじー式</span></h2><p>前段に<b>ダストブロワー</b>（アムレン／堅実魔）。氷4個が<b>中央の縦一列</b>、全員に線。</p><ul><li>①全員<b>ボス背面＝北のマス目の交点</b>に集合（線が真北を向き斜めにならない）</li><li>②<span class="danger">⚠倒れたら即、倒れた側へ一マス⚠</span>＝<b>左に倒れたら一つ左の交点／右なら一つ右の交点</b></li><li>③玉の円を踏まないよう<b>北へ一マス</b>（<b>一拍おく</b>）</li><li>④最後は<b>ボス正面＝北、ヒットボックス内</b>に集合</li></ul><a class="shot full" data-zoom><img src="assets/sildihn/06-silkie-pom4-layout.png" alt="ポン4配置"><span>中央の縦一列／<b>左に倒れたので一つ左のマスの交点へ</b>（右なら右）</span></a></article>
     </div>
   </div>
 </section>
