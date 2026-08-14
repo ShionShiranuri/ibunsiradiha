@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>異聞シラディハ水道｜1画面カンペ</title>
+<style>
+:root{--bg:#090c12;--panel:#121925;--panel2:#192334;--line:#304058;--ink:#f4f7fb;--sub:#9eacc0;--gold:#ffd166;--pink:#ff8fbd;--cyan:#62d9d0;--violet:#b99cff;--red:#ff7168;--blue:#65b6ff;--ice:#9ee8ff;--wind:#72dfa5;--thunder:#eacb59}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{overflow:hidden;background:radial-gradient(circle at 50% -25%,#2b3952 0,#090c12 48%);color:var(--ink);font-family:"Yu Gothic",Meiryo,system-ui,sans-serif}
+.app{height:100dvh;max-width:1680px;margin:auto;padding:10px 14px;display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:8px}
+header{display:flex;align-items:center;gap:12px}
+.title{font-size:clamp(18px,1.55vw,25px);font-weight:1000}.title small{font-size:.48em;color:var(--sub);margin-left:8px}
+.meta{display:flex;gap:6px;margin-left:auto}
+.pill{border:1px solid var(--line);border-radius:99px;padding:4px 9px;color:var(--sub);font-size:11px;background:#121a27}.pill b{color:var(--gold)}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.tab{cursor:pointer;border:1px solid var(--line);border-radius:9px;padding:8px;background:#151e2d;color:var(--sub);font:inherit;font-weight:900}
+.tab.active{color:#111;border-color:transparent}
+.tab[data-id="0"].active{background:var(--gold)}.tab[data-id="1"].active{background:var(--pink)}
+.tab[data-id="2"].active{background:var(--cyan)}.tab[data-id="3"].active{background:var(--violet)}
+.screen{display:none;min-height:0;border:1px solid var(--line);border-radius:13px;background:rgba(15,21,32,.97);overflow:hidden}
+.screen.active{display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.shead{display:flex;align-items:center;gap:11px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.num{font-size:24px;font-weight:1000;color:var(--gold)}
+.s1 .num{color:var(--pink)}.s2 .num{color:var(--cyan)}.s3 .num{color:var(--violet)}
+.name{font-size:clamp(17px,1.5vw,26px);font-weight:1000}
+.rule{margin-left:auto;text-align:right;color:var(--sub);font-size:clamp(10px,.82vw,13px);font-weight:800}.rule b{color:var(--gold)}
+.source{white-space:nowrap;color:var(--blue);font-size:10px;text-decoration:none;border:1px solid #3c5573;border-radius:6px;padding:4px 7px}
+.source:hover{background:#20314a}
+.timeline{display:flex;align-items:center;gap:5px;min-width:0;overflow-x:auto;margin:7px 8px 0;padding:5px 7px;border:1px solid #42546e;border-radius:8px;background:#0b111b;white-space:nowrap;font-size:clamp(8px,.68vw,11px)}
+.timeline b{color:var(--gold);position:sticky;left:0;background:#0b111b;padding-right:5px;z-index:1}
+.timeline span{padding:3px 6px;border-radius:5px;background:#1c293b;font-weight:800}
+.timeline i{color:var(--gold);font-style:normal}
+.board{min-height:0;overflow:hidden;padding:7px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.col{min-width:0;min-height:0;display:flex;flex-direction:column;gap:7px}
+.card{min-height:0;background:linear-gradient(145deg,#182334,#111824);border:1px solid var(--line);border-radius:9px;padding:6px 9px;overflow:auto}
+.card.grow{flex:1}
+.card h2{margin:0 0 5px;color:var(--gold);font-size:clamp(11px,1.02vw,18px);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.card p,.card li{font-size:clamp(9.5px,.82vw,15px);line-height:1.42}
+.card p{margin:3px 0}.card ul{margin:2px 0;padding-left:16px}.card li{margin:2.5px 0}
+.flow{display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin:3px 0}
+.step{border:1px solid #3b4d68;border-radius:5px;background:#202c40;padding:3px 7px;font-weight:800;font-size:clamp(9px,.76vw,13px)}
+.arrow{color:var(--gold);font-weight:900}
+.danger{color:#ff918a;font-weight:900}.safe{color:#78e1ae;font-weight:900}
+.role{display:inline-block;border-radius:4px;background:#28374e;padding:1px 5px;font-size:.88em;font-weight:900}
+.tag{font-size:9px;font-weight:900;padding:1px 6px;border-radius:4px;background:#2a3b28;color:#93e0a0;border:1px solid #3e6440}
+.tag.g8{background:#22323f;color:#7fd4ff;border-color:#33566b}
+.tag.hot{background:#3c2029;color:#ff9aa8;border-color:#6b3340}
+.tag.jiji{background:#20323d;color:#7fd4ff;border-color:#2e5568}
+.wind{color:var(--wind)}.thun{color:var(--thunder)}.ice{color:var(--ice)}
+.tk{color:#7fa8ff}.hl{color:#6fe0a8}.dp{color:#ff9a9a}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:5px;margin-top:6px}
+.shot{display:block;border:1px solid #45566f;border-radius:6px;overflow:hidden;background:#070b11;cursor:zoom-in;text-decoration:none}
+.shot img{display:block;width:100%;height:clamp(58px,9.5vh,150px);object-fit:contain;background:#0a0f18}
+.shot span{display:block;padding:3px 5px;font-size:clamp(8.5px,.62vw,11px);font-weight:800;color:#cfe0f2;background:#151f2e;line-height:1.25}
+.shot.big img{height:clamp(105px,25vh,380px)}
+.shot.med img{height:clamp(92px,18vh,280px)}
+.shot.sm img{height:clamp(70px,11vh,175px)}
+.shot.full{grid-column:1/-1}
+.ptable{width:100%;border-collapse:collapse;margin:5px 0 0;font-size:clamp(8.5px,.74vw,13px)}
+.ptable th,.ptable td{border:1px solid var(--line);padding:3px 6px;text-align:left;vertical-align:top}
+.ptable th{background:#1b2130;color:var(--sub);font-size:.92em;font-weight:800}
+.ptable td b{color:var(--gold)}
+.modal{display:none;position:fixed;inset:0;z-index:40;background:#000e;padding:20px}
+.modal.open{display:flex;align-items:center;justify-content:center}
+.modal .box{width:min(96vw,1500px);height:92vh;background:#0b1019;border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;align-items:center;justify-content:center}
+.modal .box img{max-width:100%;max-height:100%;object-fit:contain}
+.foot{position:fixed;right:15px;bottom:3px;color:#516078;font-size:9px}
+@media(max-height:800px){
+  .card p,.card li{font-size:clamp(8.8px,.72vw,12px);line-height:1.34}
+  .card h2{font-size:clamp(10.5px,.9vw,15px);margin-bottom:3px}
+  .card ul{padding-left:15px}.card li{margin:2px 0}
+  .card{padding:5px 8px}
+  .shot img{height:8.5vh}.shot.sm img{height:10vh}.shot.med img{height:15.5vh}.shot.big img{height:22vh}
+  .shot span{font-size:8.5px;padding:2px 4px}
+  .ptable th,.ptable td{padding:2px 4px}
+}
+@media(max-width:900px),(max-height:620px){
+  body{overflow:auto}.app{height:auto}.screen.active{display:block}.board{grid-template-columns:1fr}
+  .meta{display:none}.rule{font-size:10px}.foot{display:none}.card{overflow:visible}
+  .shot img{height:auto}.timeline{white-space:normal;flex-wrap:wrap}.timeline b{position:static}
+}
+@media print{body{overflow:visible;background:#fff}.app{height:auto}.screen{display:block!important;break-after:page}nav,.meta,.foot{display:none}}
+</style>
+</head>
+<body><main class="app">
+
+<header>
+  <div class="title">異聞シラディハ水道 <small>1ボス=game8ベース／ポン②④は じじー式・戦闘中1画面カンペ</small></div>
+  <div class="meta">
+    <span class="pill">4人／<b>IL635シンク</b></span>
+    <span class="pill">全体は<b>軽減</b></span>
+    <span class="pill">零式：<b>全滅で最初から</b></span>
+  </div>
+</header>
+
+<nav>
+  <button class="tab" data-id="0">道中雑魚</button>
+  <button class="tab active" data-id="1">1 シルキー</button>
+  <button class="tab" data-id="2">2 グラディアトル</button>
+  <button class="tab" data-id="3">3 ゼレズ・ガー</button>
+</nav>
+
+<!-- ============ 0 道中 ============ -->
+<section class="screen s0" id="screen0">
+  <div class="shead"><span class="num">道中</span><span class="name">雑魚まとめ</span>
+    <span class="rule"><b>必ず1体／1グループずつ</b>　零式は雑魚が即死級</span></div>
+  <div class="timeline"><b>進行</b><span>ベラドンナ</span><i>→</i><span>カルク</span><i>→</i><span>ドライアド組</span><i>→</i><span>ウドンゲ組</span><i>→</i><span>①シルキー</span><i>→</i><span>イビル→デュラハン ×2</span><i>→</i><span>②グラディアトル</span><i>→</i><span>③ゼレズ・ガー</span></div>
+  <div class="board">
+    <div class="col">
+      <article class="card grow"><h2>シルキー前①（単体×2）</h2>
+        <div class="flow"><span class="step">ベラドンナ</span><span class="arrow">→</span><span class="step">カルク</span></div>
+        <ul>
+          <li><b>ベラドンナ</b>／デラシネーター＝ヘイト1位への激強単体。<span class="danger">零式は無敵推奨</span></li>
+          <li>アトロンピンスポア＝足元集合で回避</li>
+          <li><b>カルク</b>／左方・右方薙ぎ払いは<b>詠唱の逆側</b>、前方扇は<b>背面</b>へ。交互に来る</li>
+        </ul>
+      </article>
+    </div>
+    <div class="col">
+      <article class="card grow"><h2>シルキー前②（2グループ・順不同）</h2>
+        <ul>
+          <li><b>ドライアド＋オドカン×2</b>／<span class="danger">アーボリアルストーム＝大円で即死</span>。必ず離れる</li>
+          <li><b>ドライアドをフォーカスで先に落とす</b></li>
+          <li><b>ウドンゲ＋サブリア×2</b>／<span class="danger">フロントネクター＝即死</span>。表示方向の反対（背面）へ</li>
+          <li>ブラッディカレス＝向いている方向へ扇</li>
+        </ul>
+      </article>
+    </div>
+    <div class="col">
+      <article class="card grow"><h2>グラディアトル前（巡回あり）</h2>
+        <div class="flow"><span class="step">イビル</span><span class="arrow">→</span><span class="step">デュラハン</span><span class="arrow">→</span><span class="step">もう1セット</span></div>
+        <ul>
+          <li><b>イビルアーマー</b>／ヘリッシュネビュラ＝<b>HPが1になる</b>。<span class="danger">デュラハンのペインが残っていると死ぬ</span>ので必ず切れてから</li>
+          <li>ヘヴィ後は<b>前方扇が確定</b>。全員正面待機で向きを固定すると事故らない</li>
+          <li><b>デュラハン</b>／インファーナルペイン＝全体＋ペイン。<b>2回撃たせない</b></li>
+          <li><b>LB配分：1ボスに使わず → デュラハン1回目にフルバースト → 2回目にLB</b></li>
+        </ul>
+        <a class="shot full" data-zoom><img src="assets/sildihn/01-boss2-trash-patrol.png" alt="巡回ルート"><span>巡回は1ボス撃破の瞬間から開始／青=デュラハン・緑=イビル</span></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1 シルキー ============ -->
+<section class="screen s1 active" id="screen1">
+  <div class="shead"><span class="num">01</span><span class="name">シルキー</span>
+    <span class="rule"><b>風=ドーナツ○／雷=X字／氷=十字</b>　ポン②④は<b>じじー式</b>／本体の色を必ず見る</span>
+    <a class="source" href="https://game8.jp/ff14/489106" target="_blank" rel="noopener">Game8↗</a></div>
+  <div class="timeline"><b>順</b><span>①雷ボム</span><i>→</i><span>②ダストブロワー</span><i>→</i><span>③ポン3個+水拭き+すべシャン</span><i>→</i><span>④水洗い</span><i>→</i><span>⑤ポン4個(線誘導)</span><i>→</i><span>⑥ポン8個+洗い壺</span><i>→</i><span>⑦ダストブロワー2</span><i>→</i><span>⑧ポン氷4個+水拭き</span></div>
+  <div class="board">
+    <div class="col">
+      <article class="card"><h2>属性の基本 <span class="tag g8">game8式</span></h2>
+        <ul>
+          <li><b class="wind">風 そよそよ ○</b>＝ドーナツ／<b>足元が安置</b></li>
+          <li><b class="thun">雷 ぱちぱち ×</b>＝X字／<b>東西南北が安置</b></li>
+          <li><b class="ice">氷 ひえひえ 十</b>＝十字／<b>斜め4方向が安置</b></li>
+        </ul>
+        <p><b>開幕は雷確定。</b>「みんなでシャンプーボム」＝本体＋場のポンポンが同時発動 → <b>全部の安置が重なる1点</b>を探す。</p>
+        <p><b>ダストブロワー</b>＝ノックバック、アムレン／堅実魔で無効。<b>2回</b>来る（リキャ間に合う）。</p>
+        <p><b>水洗い</b>＝重い全体。アドル／牽制／リプライザル。</p>
+      </article>
+      <article class="card grow"><h2>すべってシャンプーボム</h2>
+        <p>タンク以外ランダム1名へ<b>直線頭割り</b>。並びは<b>先頭 <span class="tk">T</span> ＞ 他 ＞ 対象者</b>。</p>
+        <ul>
+          <li><b class="thun">雷</b>：着弾後にX字＋各自小円 → <b>ボス正面=<span class="tk">T</span>／背後=<span class="hl">H</span>／左右=<span class="dp">D</span></b></li>
+          <li><b class="wind">風</b>：対象決定時にノックバック → <b>アムレン／堅実魔でボス直下</b>、着弾後ドーナツ</li>
+          <li><b class="ice">氷</b>：<span class="danger">止まっていると凍結</span> → <b>動きながら</b>受け、その後は斜めへ</li>
+        </ul>
+        <p><b>カーペットビーター</b>＝T強攻撃。<b>水拭き</b>＝その場で正面90度×2→225度を薙ぐ。<b>最初に倒れた側が安置</b>。当たった玉は本体属性に塗り替わる。</p>
+      </article>
+    </div>
+
+    <div class="col">
+      <article class="card"><h2>ポンポン① 3個＋水拭き <span class="tag g8">game8式</span></h2>
+        <p>水拭きで<b>2個が風になり安置が消える</b> → 頭割りで<b>緑を1個だけ青（氷）に塗り替えて安置を作る</b>。</p>
+        <div class="flow"><span class="step">頭割りで緑を巻き込む</span><span class="arrow">→</span><span class="step">Tは残った風ポンへ誘導</span><span class="arrow">→</span><span class="step">みんなで爆発</span></div>
+        <ul><li>頭割り位置：<b>風が残れば南／雷が残れば北</b></li></ul>
+      </article>
+      <article class="card grow"><h2>ポンポン② 4個・線誘導 <span class="tag jiji">じじー式</span> <span class="tag hot">最難所</span></h2><p>全員に線＋マーカー。消えると<b>線の方向へ玉が転がる</b>。じじー式は<b>本体の属性に関係なく1ルール</b>。</p><ul><li><b class="thun">雷（黄）＝中央から外周へ、まっすぐ引く</b>（玉が角なら斜め外／縦横なら真っ直ぐ外）</li><li><b class="ice">氷（青）＝時計回りに斜めへ引く</b>。玉の<b>斜めに立って</b>線を伸ばす</li><li><span class="danger">※氷は角（コーナー）へ持っていくのは絶対NG</span>。角になりそうならさらに時計回りにずらす</li><li>方向さえ合っていれば<b>距離は不問</b>（マス目の交点に乗らなくてよい）</li><li>ルールは単純だが<b>安置が狭い</b>ので、近接は無理に殴らない</li></ul><a class="shot full big" data-zoom><img src="assets/sildihn/02-silkie-pom2-jizi-chart.png" alt="じじー式チャート"><span>じじー式 公式チャート／左列=<b>ボス氷</b>・右列=<b>ボス風</b>、上段=<b>四角</b>・下段=<b>十字</b></span></a></article>
+    </div>
+
+    <div class="col">
+      <article class="card"><h2>ポンポン③ 8個＋洗い壺 <span class="tag g8">game8式</span></h2>
+        <p><b>2行×4列の8個</b> → <b>壺3個が北→南へ直進</b>し通った<b>3列＝6個が無属性化</b>。<b>壺が来ない1列の2個</b>だけ避ける。</p>
+        <div class="flow"><span class="step">北に壺が無い列へ</span><span class="arrow">→</span><span class="step">残り2個を回避</span><span class="arrow">→</span><span class="step">6個を氷化</span><span class="arrow">→</span><span class="step">北壁際の足元</span></div>
+        <ul><li>すべシャン(氷)で<b>無属性6個を全部氷に</b>／対象者は<b>ボス反対側から6個を貫くライン</b></li>
+            <li>仕上げは本体が風 → <b>ボスを北の壁際へ寄せ、その足元</b></li></ul>
+        <div class="shots">
+          <a class="shot" data-zoom><img src="assets/sildihn/03-silkie-pom3-ewers.png" alt="壺"><span>①壺3本／残る1列</span></a>
+          <a class="shot" data-zoom><img src="assets/sildihn/04-silkie-pom3-safe.png" alt="爆発"><span>②暗い所＝安置</span></a>
+          <a class="shot" data-zoom><img src="assets/sildihn/05-silkie-pom3-iced.png" alt="氷化"><span>③6個氷化後</span></a>
+        </div>
+      </article>
+      <article class="card grow"><h2>ポンポン④ 氷4個・縦一列 <span class="tag jiji">じじー式</span></h2><p>前段に<b>ダストブロワー</b>（アムレン／堅実魔）。氷4個が<b>中央の縦一列</b>で出現、全員に線。玉は線の方向へ<b>一定距離だけ跳ぶ</b>。</p><ul><li>①全員<b>ボス背面＝北のマス目の交点</b>に集合（線が真北を向き斜めにならない）</li><li>②<span class="danger">⚠倒れたら即、倒れた側へ一マス⚠</span>＝<b>左に倒れたら一つ左の交点／右なら一つ右の交点</b></li><li>③着地する玉の円を踏まないよう<b>北へ一マス</b>（すぐ動くとボス範囲を踏むので<b>一拍おく</b>）</li><li>④最後は<b>ボス正面＝北、ヒットボックス内</b>に集合</li><li>玉が薙ぎ払いに当たると<b>風に塗り替わって即死</b>。それを避けるための横ズラし</li></ul><a class="shot full" data-zoom><img src="assets/sildihn/06-silkie-pom4-layout.png" alt="ポン4配置"><span>中央の縦一列／<b>左に倒れたので一つ左のマスの交点へ</b>（右なら右）</span></a></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 グラディアトル ============ -->
+<section class="screen s2" id="screen2">
+  <div class="shead"><span class="num">02</span><span class="name">シラディハ・グラディアトル</span>
+    <span class="rule"><b>オレンジに光った回数＝止まる目盛り</b>　全体が重いので軽減を波動へ</span>
+    <a class="source" href="https://game8.jp/ff14/489187" target="_blank" rel="noopener">Game8↗</a></div>
+  <div class="timeline"><b>順</b><span>①闘人の波動</span><i>→</i><span>②亡念幻身+突撃</span><i>→</i><span>③闘人砲</span><i>→</i><span>④闘人の斬撃</span><i>→</i><span>⑤呪怨の咆哮+大剛の旋撃</span><i>→</i><span>⑥呪像起動</span><i>→</i><span>⑦呪怨呪像</span><i>→</i><span>⑧呪怨の連撃+霊塔</span></div>
+  <div class="board">
+    <div class="col">
+      <article class="card grow"><h2>亡念幻身 → 大剛の突撃</h2>
+        <p>分身2体が対角へ突進 → <b>前方180度</b> → 続けて<b>後方180度</b>。2体の隙間の<b>90度</b>が安置。</p>
+        <ul>
+          <li>ラインに<b>目盛り3つ</b>＝停止位置。<b>オレンジに光った回数＝止まる番号</b></li>
+          <li>アナザーは<b>ゲージ非表示</b>。光り方だけで数える</li>
+          <li><b>1発目を避けた場所の対面が2発目の安置</b></li>
+          <li>組合せは<b>1-2／1-3／2-3の3種のみ</b>（左右は入れ替わる）。<b>2-3は安置が最も狭い</b></li>
+          <li><b>2-3処理のときは数字マーカーが目印</b></li>
+        </ul>
+        <a class="shot full big" data-zoom><img src="assets/sildihn/07-boss2-bounen-genshin.png" alt="亡念幻身"><span>1-3処理／2-3処理　紫＝斬撃・白い隙間が安置</span></a>
+      </article>
+    </div>
+    <div class="col">
+      <article class="card"><h2>闘人砲 → 闘人の斬撃</h2>
+        <p><span class="hl">H</span>対象の<b>直線頭割り</b>。並びは<b>ボス側から <span class="tk">T</span> → <span class="dp">D</span> → <span class="hl">H</span></b>。</p>
+        <p class="danger">対象のHが最後尾にいないと死ぬ。回復も厚めに。</p>
+        <p><b>闘人の斬撃</b>＝T強攻撃＋前方範囲。他は前に立たない。この後ボスを<b>中央やや南</b>へ。</p>
+      </article>
+      <article class="card grow"><h2>呪怨の咆哮 ＋ 大剛の旋撃</h2>
+        <p><b>デバフの秒数が短い方が先に発動</b>。「頭割り＋連呪」が先か「全員散開」が先かを秒数で判断。</p>
+        <ul>
+          <li><b>呪怨の残響</b>＝全員。0で自分中心の円。<span class="danger">重なると即死</span></li>
+          <li><b>重怨の残響</b>＝1名。頭割り円</li>
+          <li><b>連呪の残響</b>＝1名。円＋<b>その場に連続着弾</b>→着弾後は離れる</li>
+          <li><b>大剛の旋撃</b>＝同心円3つ。<b>チャージ完了したリングが即死</b> → その後<b>反転側</b>にもう1発（<span class="danger">ドーナツを忘れがち</span>）</li>
+          <li>配置例：<b>連呪=北／頭割り=南</b>、無職2名は頭割りの両脇→<b>立っていた方向へ</b>散開</li>
+        </ul>
+      </article>
+    </div>
+    <div class="col">
+      <article class="card"><h2>呪像起動＋亡念励起＋座下隆起</h2>
+        <ul>
+          <li><b>像の顔から光の玉が出ている方にビーム</b>。床予兆が出ないので<b>目視</b></li>
+          <li><b>亡念励起</b>＝格子状の直線。<b>予兆が出た順に発動</b>→潰れていない床へ</li>
+          <li><b>座下隆起</b>＝マーカー消滅で円＝実質<b>全員散開</b>。<b>4分割して1人1面</b></li>
+          <li>優先度 <b>北 <span class="tk">T</span> ＞ <span class="dp">D1</span> ＞ <span class="dp">D2</span> ＞ <span class="hl">H</span> 南</b></li>
+        </ul>
+      </article>
+      <article class="card"><h2>呪怨呪像（あえて当たる）</h2>
+        <p class="danger">カウント0までに消せないと強制即死。</p>
+        <ul>
+          <li><b>黄金の呪い → 銀のビーム</b>／<b>白銀の呪い → 金のビーム</b>（逆の色）</li>
+          <li>内訳固定：<b>金2が1名／銀2が1名／金銀1つずつが2名</b></li>
+          <li>金2＝<b>銀2本の交差点</b>／銀2＝<b>金2本の交差点</b>／金銀＝<b>交差点2ヶ所</b></li>
+          <li>金銀の2名は<b>南北に分かれて</b>同じ場所へ行かない</li>
+        </ul>
+      </article>
+      <article class="card grow"><h2>呪怨の連撃（鎖）→ 亡国の霊塔</h2>
+        <div class="flow"><span class="step">中央集合</span><span class="arrow">→</span><span class="step">鎖切り</span><span class="arrow">→</span><span class="step">5発目予兆へ</span><span class="arrow">→</span><span class="step">塔×2セット</span></div>
+        <ul>
+          <li>鎖は<b><span class="tk">T</span>⇔<span class="hl">H</span></b>と<b><span class="dp">D</span>⇔<span class="dp">D</span></b>。離れないと切れない</li>
+          <li>中央から<b>9発の予兆が出た順に発動</b>。<b>北=T+D1／南=H+D2</b>に分かれ<b>最後に出る方向</b>へ</li>
+          <li><b>セカンドが最初の塔／ファーストは外周で大残響</b> → 次の軸で逆転</li>
+          <li>塔優先度 <b>北・東 <span class="tk">T</span> ＞ <span class="dp">D1</span> ＞ <span class="dp">D2</span> ＞ <span class="hl">H</span> 南・西</b></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 ゼレズ・ガー ============ -->
+<section class="screen s3" id="screen3">
+  <div class="shead"><span class="num">03</span><span class="name">影火のゼレズ・ガー</span>
+    <span class="rule"><b>回転後の位置 → 紫線の相方へ飛ぶ</b>　が全ての基本</span>
+    <a class="source" href="https://game8.jp/ff14/489571" target="_blank" rel="noopener">Game8↗</a></div>
+  <div class="timeline"><b>順</b><span>①呪具1+石火豪衝+天の聖火</span><i>→</i><span>②呪具2(番号線)+影火呪式</span><i>→</i><span>③呪具3(eis式)</span><i>→</i><span>④呪具4(おもち式)</span><i>→</i><span>⑤呪具5+劫火</span></div>
+  <div class="board">
+    <div class="col">
+      <article class="card"><h2>ワープ床の大原則</h2>
+        <ul>
+          <li>床は<b>紫線で対になる床と繋がる</b>。上の火球やプレイヤーは<b>対の床へ転移</b></li>
+          <li>「転移の呪印」で<b>床のセットが90度回転</b>。<b>爆発は回転後</b></li>
+          <li>手順：<b>①回転の向き → ②90度回した後の火球位置 → ③紫線の相方へ飛ばす</b>。その着地点が危険</li>
+          <li>色名は表記ゆれあり。<b>「2つが同じ回転か違う回転か」</b>で判断が安全</li>
+        </ul>
+      </article>
+      
+      <article class="card"><h2>呪具① 回転火球＋豪衝</h2>
+        <p>杖＋火球のペアが<b>北2組・南2組</b>。散開は<b>北=<span class="tk">T</span>+<span class="hl">H</span>／南=<span class="dp">DPS</span></b>。</p>
+        <ul>
+          <li><b>違う向き＝簡単</b>：近接は<b>両方に挟まれる位置</b>、遠隔は<b>斜め後ろの端ギリギリ</b></li>
+          <li><b>同じ向き＝難しい</b>：遠隔は端ギリギリ、近接は<b>爆発の届く距離を体感</b>で</li>
+        </ul>
+      </article>
+      <article class="card grow"><h2>呪具② 番号線切り＋影火呪式</h2>
+        <p>南北に<b>赤線4本</b>／東西に<b>青線4本</b>。全員に<b>1〜4の呪印</b>。</p>
+        <p class="danger">絶対ルール：必ず 1 → 2 → 3 → 4 の順。順番を無視するとスタン＋ワイプ。</p>
+        <div class="flow"><span class="step">魔法陣が北→赤から</span><span class="arrow">/</span><span class="step">西→青から</span></div>
+        <ul>
+          <li>理由：<b>線が安置への通せんぼ</b>。進行方向を塞ぐ側から消す</li>
+          <li>立ち位置：<b>1回目を切るとき2回目も切れる位置</b>に付く。<b>2人ずつに分かれる</b></li>
+          <li>小技：<b>1番は発動前から線に触れておく</b>／<b>4番は最後の1本なのでどこからでも</b></li>
+          <li><b>影火呪式</b>＝扇が順に着弾。<b>遅く伸びる方に立ち、1発目発動後にそこへ入る</b></li>
+        </ul>
+        
+      </article>
+    </div>
+    <div class="col">
+      
+      <article class="card grow"><h2>呪具③ 呪具流火＋強制転移 <span class="tag">eis式</span></h2>
+        <p>回る予兆の後 <b>最も近い2名へ扇</b>。強制転移で任意移動が不可。</p>
+        <ul>
+          <li><b>オレンジ(時計回り)=北半分／青(反時計)=南半分</b></li>
+          <li><b>矢印が左=外側（外周端）／右=内側</b></li>
+          <li>結果、北から南へ<b>「左・右・右・左」</b>が理想形</li>
+          <li>転移後は<b>内向きの床に順序を崩さず乗る</b>。<span class="danger">外向きに乗ると場外＝死</span></li>
+          <li>誘導：<b>内側=杖の左／外側=杖の真南</b></li>
+          <li><b>時短技：フィールドマーカー1番・3番の上に立つ</b>と「最も近い2名」が固定できる</li>
+          <li>転移で内外が入れ替わる → <b>1回目と同じ位置取りをもう一度</b></li>
+        </ul>
+        <a class="shot full big" data-zoom><img src="assets/sildihn/08-boss3-juigu3-eis.png" alt="eis式 立ち位置"><span>北から <b>左・右・右・左</b>／北2人=オレンジ(時計回り)・南2人=青(反時計)／矢印＝乗る転移床</span></a>
+      </article>
+      <article class="card"><h2>全体・単体技</h2>
+        <ul>
+          <li><b>勇士の咆哮</b>＝強力な全体。零式は<b>軽減2枚以上</b></li>
+          <li><b>石火豪衝</b>＝ジャンプ円＋被魔法増。<span class="danger">対象外が巻き込まれるとノックバックで即死</span>。2発</li>
+          <li><b>天の聖火</b>＝直線貫通。<span class="danger">デバフ持ちが先頭だと即死</span> → <b>デバフなし2名が前で庇う</b>。2回目は<b>タンク無敵で縦一列</b></li>
+          <li><b>石火豪打</b>＝T対象の扇。向いている方向に近づかない</li>
+        </ul>
+      </article>
+    </div>
+    <div class="col">
+      <article class="card grow"><h2>呪具④ 立体魔法陣3つ <span class="tag">おもち式</span></h2>
+        <p class="danger">最大の罠：回転しても「向き（角度）」は変わらない。床が回ってスライドするだけ。</p>
+        <ul>
+          <li>①<b>西=<span class="tk">T</span>+<span class="hl">H</span>／東=<span class="dp">DPS</span></b>で魔法陣の前に待機</li>
+          <li>②回転方向が出たら<b>その回転とは逆のマスへ</b> → <b>その横列が安置確定</b></li>
+          <li>③<b>中央</b>を確認：初期が<b>横</b>＝東西を分断→<b>遠隔が対岸へ</b>／<b>縦</b>＝列そのまま、<b>ボスに近い方を近接</b></li>
+          <li><b>「横4列で考える」</b>。移動は遠隔が行う</li>
+        </ul>
+        <a class="shot full sm" data-zoom><img src="assets/sildihn/09-boss3-juigu4-omochi.png" alt="呪具4 立体魔法陣"><span>東西2つ＋中央1つ／<b>赤帯＝直線範囲</b>・オレンジ＝回転。西=<b>MT・H1</b>／東=<b>D2・D1</b></span></a>
+      </article>
+      <article class="card grow"><h2>呪具⑤ 線＋杖4本＋劫火</h2>
+        <p>東西南北に扇の杖4本＋赤青の線。<b>ワープ床はない</b>。線を切ると<b>被魔法増（約8秒）</b>→<b>扇誘導役と線切り役を交互に交代</b>。</p>
+        <ul>
+          <li>初期：<b><span class="role">1・2</span>＝中央待機／<span class="role">3・4</span>＝最初に光った杖の両脇</b></li>
+          <li>誘導の向き：<b>杖からボスを正面に見て 奇数=左／偶数=右</b></li>
+          <li>①3・4が1発目の杖を挟んで誘導 → ②その間に1・2が自線を切って道を開ける</li>
+          <li>③3・4が次の杖側で線を取る → ④同時に1・2が2発目の杖を誘導</li>
+          <li><b>劫火</b>＝全員の足元に円。<b>中央を空けて</b>捨てる</li>
+          </ul>
+        <a class="shot full sm" data-zoom><img src="assets/sildihn/10-boss3-juigu5.png" alt="呪具5 杖と線"><span>杖4本の<b>扇（蝶型）</b>＋<b>赤＝縦の線／青＝横の線</b>。四角＝自分の番号。誘導は<b>奇数=左／偶数=右</b></span></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="modal" id="modal"><div class="box" id="modalbox"></div></div>
+<div class="foot">0 / 1 / 2 / 3 キーで切替・図クリックで拡大・Esc で閉じる</div>
+<script>
+const tabs=[...document.querySelectorAll('.tab')],screens=[...document.querySelectorAll('.screen')];
+function show(id){
+  tabs.forEach(x=>x.classList.toggle('active',x.dataset.id===id));
+  screens.forEach(x=>x.classList.toggle('active',x.id==='screen'+id));
+  history.replaceState(null,'','#boss'+id);
+}
+tabs.forEach(x=>x.onclick=()=>show(x.dataset.id));
+addEventListener('keydown',e=>{
+  if(['0','1','2','3'].includes(e.key))show(e.key);
+  if(e.key==='Escape')document.getElementById('modal').classList.remove('open');
+});
+document.querySelectorAll('[data-zoom]').forEach(a=>{
+  a.addEventListener('click',ev=>{
+    ev.preventDefault();
+    const img=a.querySelector('img');if(!img)return;
+    const m=document.getElementById('modal'),b=document.getElementById('modalbox');
+    b.innerHTML='<img src="'+img.src+'" alt="">';m.classList.add('open');
+  });
+});
+document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.classList.remove('open')};
+const h=location.hash.match(/^#boss([0-3])$/);if(h)show(h[1]);
+</script>
+</body></html>

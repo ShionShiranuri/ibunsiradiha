@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>異聞六根山｜1画面カンペ</title>
+<style>
+:root{--bg:#090c12;--panel:#121824;--panel2:#192233;--line:#2b3950;--text:#f4f7fb;--muted:#9cabc0;--gold:#ffd166;--red:#ff6b6b;--blue:#65b6ff;--green:#62d6a2;--orange:#ffad5c;--purple:#c994ff}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{overflow:hidden;background:radial-gradient(circle at 50% -20%,#26364d 0,#090c12 48%);color:var(--text);font-family:"Yu Gothic",Meiryo,system-ui,sans-serif}
+button{font:inherit}.app{height:100dvh;max-width:1680px;margin:auto;padding:10px 14px;display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:8px}
+header{display:flex;align-items:center;gap:14px}.title{font-weight:900;font-size:clamp(17px,1.5vw,24px);white-space:nowrap}.title small{font-size:.52em;color:var(--muted);font-weight:600;margin-left:8px}.global{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}.pill{padding:4px 9px;border:1px solid var(--line);border-radius:99px;background:#121a27;color:var(--muted);font-size:clamp(9px,.75vw,12px)}.pill b{color:var(--gold)}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tab{cursor:pointer;border:1px solid var(--line);border-radius:9px;background:#151d2b;color:var(--muted);padding:8px;font-weight:900}.tab.active{color:#081019;border-color:transparent}.tab[data-id="0"].active{background:var(--gold)}.tab[data-id="1"].active{background:var(--orange)}.tab[data-id="2"].active{background:#55d7c2}.tab[data-id="3"].active{background:var(--purple)}
+.boss{display:none;min-height:0;border:1px solid var(--line);border-radius:13px;background:rgba(15,20,31,.96);overflow:hidden}.boss.active{display:grid;grid-template-rows:auto minmax(0,1fr)}
+.bhead{display:flex;align-items:center;gap:12px;padding:8px 12px;border-bottom:1px solid var(--line)}.num{font-size:25px;font-weight:1000}.name{font-size:clamp(18px,1.7vw,27px);font-weight:1000}.rule{margin-left:auto;color:var(--muted);font-weight:700;font-size:clamp(10px,.85vw,13px);text-align:right}.rule strong{color:var(--gold)}
+.pics{cursor:pointer;white-space:nowrap;border:1px solid #546783;border-radius:7px;background:#243149;color:#fff;padding:5px 9px;font-weight:900;font-size:clamp(10px,.78vw,12px)}.pics:hover{background:#304363}
+.b0 .num{color:var(--gold)}.b1 .num{color:var(--orange)}.b2 .num{color:#55d7c2}.b3 .num{color:var(--purple)}
+.board{min-height:0;padding:8px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.board.hasfig{grid-template-columns:repeat(3,minmax(0,1fr)) minmax(210px,.9fr)}.col{min-width:0;display:flex;flex-direction:column;gap:7px}.card{background:linear-gradient(145deg,#172131,#111824);border:1px solid var(--line);border-radius:9px;padding:7px 9px;min-height:0}.card.grow{flex:1}.card h2{font-size:clamp(11px,.95vw,15px);margin:0 0 4px;color:var(--gold);display:flex;gap:6px;align-items:center}.card h2 em{font-style:normal;background:#2a3548;border-radius:5px;padding:1px 6px;color:#dce5f3}.card p,.card li{font-size:clamp(9px,.79vw,12.5px);line-height:1.32}.card p{margin:3px 0}.card ul{margin:2px 0;padding-left:17px}.card li{margin:2px 0}.move{font-weight:900;color:#fff}.then{color:var(--gold);font-weight:900}.danger{color:#ff8b83;font-weight:900}.safe{color:#7de2b2;font-weight:900}.fire{color:var(--red);font-weight:900}.water{color:var(--blue);font-weight:900}.role{display:inline-block;padding:0 5px;border-radius:4px;background:#26344a;font-size:.88em;font-weight:900}.flow{display:flex;gap:4px;align-items:center;flex-wrap:wrap}.step{background:#202b3d;border:1px solid #34445d;border-radius:5px;padding:3px 6px;font-size:clamp(9px,.72vw,11px);font-weight:800}.arrow{color:var(--gold)}
+.figrail{min-width:0;background:#0c111b;border:1px solid var(--line);border-radius:9px;padding:6px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto;grid-auto-rows:minmax(0,1fr);gap:6px;overflow:hidden}.figrail h2{grid-column:1/-1;margin:0;color:var(--gold);font-size:12px}.mini{margin:0;min-height:0;border:1px solid #34435a;border-radius:7px;overflow:hidden;background:#06090e;position:relative;cursor:pointer}.mini img{display:block;width:100%;height:100%;object-fit:contain}.mini figcaption{position:absolute;left:0;right:0;bottom:0;padding:3px 4px;background:rgba(0,0,0,.78);color:#fff;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.figrail.single{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}
+.footerhint{position:fixed;right:18px;bottom:4px;color:#53637a;font-size:9px;pointer-events:none}
+.gallery{display:none;position:fixed;inset:0;z-index:50;background:rgba(3,6,11,.94);padding:18px}.gallery.open{display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px}.ghead{display:flex;align-items:center;gap:12px}.ghead h2{margin:0;font-size:20px}.close{margin-left:auto;cursor:pointer;border:1px solid #687a94;border-radius:8px;background:#1d293b;color:#fff;padding:7px 14px;font-weight:900}.grid{min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));align-content:start;gap:10px}.shot{margin:0;background:#121a27;border:1px solid var(--line);border-radius:9px;padding:6px}.shot img{display:block;width:100%;height:clamp(125px,24vh,240px);object-fit:contain;background:#080b10;border-radius:6px;cursor:zoom-in}.shot figcaption{font-size:11px;color:#cbd5e4;padding:5px 2px 1px}.gallery.zoom .grid{display:flex;justify-content:center;align-items:center;overflow:hidden}.gallery.zoom .shot{display:none}.gallery.zoom .shot.selected{display:block;width:min(96vw,1200px);height:calc(100% - 2px)}.gallery.zoom .shot.selected img{height:calc(100% - 30px);cursor:zoom-out}.gallery.zoom .shot.selected figcaption{text-align:center}
+@media(max-width:900px),(max-height:620px){body{overflow:auto}.app{height:auto;min-height:100dvh}.boss.active{display:block}.board,.board.hasfig{grid-template-columns:1fr}.figrail{min-height:520px}.global{display:none}.rule{font-size:10px}.footerhint{display:none}}
+@media print{body{overflow:visible;background:#fff;color:#000}.app{height:auto}.global,nav,.footerhint{display:none}.boss{display:block!important;break-after:page;border-color:#999}.boss.active{display:block}.board{grid-template-columns:repeat(3,1fr)}.card{background:#fff;color:#000;border-color:#aaa}.card h2,.then{color:#7a4800}.rule,.pill{color:#333}}
+
+.col{min-height:0}
+.card{overflow:auto}
+.cardshots{display:grid;grid-template-columns:repeat(auto-fit,minmax(68px,1fr));gap:5px;margin-top:6px}
+.cardshots figure{margin:0;border:1px solid #3b4d68;border-radius:6px;overflow:hidden;background:#06090e;cursor:zoom-in}
+.cardshots img{display:block;width:100%;height:clamp(54px,8.5vh,120px);object-fit:contain;background:#06090e}
+.cardshots figcaption{padding:2px 4px;font-size:8.5px;color:#cfe0f2;background:#151f2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lb2{display:none;position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.94);padding:18px;align-items:center;justify-content:center;cursor:zoom-out}
+#lb2.open{display:flex}
+#lb2 img{max-width:96vw;max-height:94vh;object-fit:contain;border-radius:8px}
+@media(max-height:800px){.cardshots img{height:7.5vh}.cardshots figcaption{font-size:8px}}
+</style>
+</head>
+<body>
+<main class="app">
+ <header><div class="title">異聞六根山 <small>戦闘中1画面カンペ</small></div><div class="global"><span class="pill"><b>火＝外</b>／水＝内</span><span class="pill">全体は毎回軽減</span><span class="pill">迷ったら生存優先</span></div></header>
+ <nav aria-label="画面切替"><button class="tab" data-id="0">道中雑魚</button><button class="tab active" data-id="1">1　獅子王</button><button class="tab" data-id="2">2　鉄鼠ゴウライ</button><button class="tab" data-id="3">3　怨霊モウコ</button></nav>
+
+ <section class="boss b0" id="boss0">
+  <div class="bhead"><span class="num">道中</span><span class="name">雑魚まとめ</span><span class="rule"><strong>零式は特に雑魚事故＝やり直し</strong>　順番・誘導・軽減を固定</span><button class="pics" data-gallery="0">▧ 釣り位置図</button></div>
+  <div class="board hasfig">
+   <div class="col">
+    <article class="card grow"><h2>獅子王まで①</h2><p><span class="move">南東：ライコウ＆フルツバキ</span></p><ul><li>内輪雷＝円 → <b>離れる</b></li><li>外輪雷＝ドーナツ → <b>タゲサ内</b></li><li>バレリングスマッシュで対象HP1</li><li><span class="danger">直後の全体までにHPを戻す</span></li></ul></article>
+   </div>
+   <div class="col">
+    <article class="card"><h2>獅子王まで②</h2><p><span class="move">北西：フウコウ＆ベニホウコウ</span></p><ul><li>サイズテール＝円、離れる</li><li>大竜巻＝頭割り、集合</li><li>クロスウインド＝ノックバック</li><li>ベニホウコウのトルネドも見る</li></ul></article>
+    <article class="card grow"><h2>獅子王まで③</h2><p><span class="move">シシュウ・ユウキ</span></p><ul><li>他の雑魚全滅まで無敵</li><li>巡回ルートを見て接敵を避ける</li><li>先に残りの雑魚を処理</li></ul></article>
+   </div>
+   <div class="col">
+    <article class="card grow"><h2>ゴウライまで　1体ずつ</h2><div class="flow"><span class="step">手前コテング</span><span class="arrow">→</span><span class="step">中央オンミガシラ</span><span class="arrow">→</span><span class="step">奥コテング</span></div><ul><li><b>コテング：</b>前方扇 → 詠唱方向へ2発目。1発目後にずれる</li><li><b>オンミガシラ：</b>対象直線×3。他人に当てない</li><li><b>外周精霊：</b>直線範囲。対岸も見る</li><li><span class="role">T</span>雑魚を西または東へ誘導し、カメラを対岸へ</li></ul><p class="safe">モウコ前の道中雑魚はなし。</p></article>
+   </div>
+   <aside class="figrail single" data-open="0"><h2>常時表示｜釣り位置図</h2><figure class="mini"><img src="" data-file="2_道中雑魚.png" alt="ゴウライ道中の釣り位置"><figcaption>ゴウライ道中・釣り位置</figcaption></figure></aside>
+  </div>
+ </section>
+
+ <section class="boss b1 active" id="boss1">
+  <div class="bhead"><span class="num">01</span><span class="name">獅子王</span><span class="rule"><strong>霧の回数を数える</strong>／南を先に見る／幽霊は対角</span><button class="pics" data-gallery="1">▧ 攻略図 10枚</button></div>
+  <div class="board hasfig">
+   <div class="col">
+    <article class="card grow"><h2>六条放雷　<span class="role">最重要</span></h2><p>霞食いで黒霧を食べた<strong class="then">回数＝直線本数</strong>。</p><ul><li><b>1本：</b>黒霧のない側</li><li><b>2本：</b>霧なし側 → <span class="safe">1本目の跡地</span> → 次の跡地</li><li><b>3本：</b>2・3本目が交差する安置 → 1発目跡地 → 外周沿い</li></ul><p class="danger">3本はスプリント。大円の着弾を見てから移動。</p></article>
+   </div>
+   <div class="col">
+    <article class="card"><h2>輪・ユウキ</h2><p><span class="move">獅子王牙：</span>先に南を見る。南の輪が東ならB側安置。</p><p><span class="move">不気味な呪声：</span>中央を向く2体の<strong class="safe">対角側</strong>へ。1体目でデバフ①、2体目着弾で②。</p><p>散開 or ペア頭割り（PTマクロ優先）。</p></article>
+    <article class="card grow"><h2>渦雷の連舞</h2><p>覚えるのは2つだけ。</p><div class="flow"><span class="step">散開 / 頭割りの順</span><span class="arrow">＋</span><span class="step">円 / ドーナツの順</span></div><ul><li><b>円：</b>外　／　<b>ドーナツ：</b>中</li><li>頭割り基本：北T・南D</li><li>散開基本：タゲサ内の担当位置</li></ul><p><span class="move">輪転渦雷：</span><strong class="safe">タゲサ内</strong>へ。</p></article>
+   </div>
+   <div class="col">
+    <article class="card"><h2>黒赤招魂</h2><p>幽霊円8回＋大円2人＋塔2本。</p><ul><li><b>印なし：</b>幽霊を避けながら塔</li><li><b>大円あり：</b>対角へ線を伸ばし、他人から離れる</li></ul><p class="danger">近接欲張り禁止。</p></article>
+    <article class="card grow"><h2>通常技・終盤</h2><ul><li><b>猿叫：</b>全体軽減</li><li><b>霊鳴砲：</b>T直線 → 背面扇。背面組は側面へ</li><li><b>落雷：</b>予兆を1本ずつ見る。連続でも焦らない</li><li><b>雷雲生成3：</b>再び霞食い回数を確認</li><li><b>落雷2：</b>外周雲から太い直線</li></ul></article>
+   </div>
+   <aside class="figrail" data-open="1"><h2>常時表示｜攻略図</h2><figure class="mini"><img src="" data-file="1_霞食い_1.png" alt="霞食い1"><figcaption>霞食い 1</figcaption></figure><figure class="mini"><img src="" data-file="1_霞食い_3.png" alt="霞食い3"><figcaption>霞食い 3</figcaption></figure><figure class="mini"><img src="" data-file="1_不気味な呪声_1.png" alt="不気味な呪声"><figcaption>不気味な呪声</figcaption></figure><figure class="mini"><img src="" data-file="1_渦雷の連舞_1.png" alt="渦雷の連舞"><figcaption>渦雷の連舞</figcaption></figure></aside>
+  </div>
+ </section>
+
+ <section class="boss b2" id="boss2">
+  <div class="bhead"><span class="num">02</span><span class="name">鉄鼠ゴウライ</span><span class="rule"><strong>丸桃＝拡大／三角青＝拡散</strong>　Spell式・ぽしうめ式</span><button class="pics" data-gallery="2">▧ 攻略図 6枚</button></div>
+  <div class="board hasfig">
+   <div class="col">
+    <article class="card grow"><h2>岩火招来・琵琶</h2><ul><li><b>丸ピンク＝拡大：</b>岩は大円／火線が太る</li><li><b>三角青＝拡散：</b>岩はドーナツ／火が内→外へ分裂</li></ul><p><span class="move">炎流：</span>自分の位置へ扇×2。1発目後に移動。</p><p><span class="move">乱火2＋襲雷：</span>散開と頭割りの<strong class="then">予兆順</strong>を守り、エクサの進行方向へ寄らない。</p></article>
+   </div>
+   <div class="col">
+    <article class="card"><h2>招雷 → 打ち出の小槌</h2><ul><li><span class="role">H</span>四隅の雷球で小さくなり安置作成</li><li><span class="role">T</span>Hの前でビームを受けTH頭割り</li><li><span class="role">D</span><span class="danger">ビーム即死</span>。射線外へ</li></ul></article>
+    <article class="card grow"><h2>変現の呪い　線と塔</h2><p>ウソウソ青／モモンガ赤。1・3組と2・4組。</p><div class="flow"><span class="step">南集合</span><span class="arrow">→</span><span class="step">2/4 線</span><span class="arrow">→</span><span class="step">1/3 自色塔</span><span class="arrow">→</span><span class="step">交互に計4回</span><span class="arrow">→</span><span class="step">南西/南東</span></div><p>1・3組は最初タゲサ外。担当順を崩さない。</p></article>
+   </div>
+   <div class="col">
+    <article class="card"><h2>般若湯（Spell式）</h2><div class="flow"><span class="step">① 自番号マーカー</span><span class="arrow">→</span><span class="step">堅実/アムレン</span><span class="arrow">→</span><span class="step">BD横一列</span></div><p>1番から番号順に前へ出て十字を捨てる。中央攻撃後は南西・南東。</p><p class="danger">二度漬け厳禁。</p></article>
+    <article class="card grow"><h2>変現呪珠（ぽしうめ式）</h2><div class="flow"><span class="step">デバフⅠと逆側で塔出し</span><span class="arrow">→</span><span class="step">対面の自色塔</span><span class="arrow">→</span><span class="step">四隅</span><span class="arrow">→</span><span class="step">呪珠印の塔</span></div><ul><li>異色時＝1番目と同色／同色時＝1番目と逆色</li><li>全員同色なら赤塔＝左、青塔＝右</li><li>最後の網目範囲×2まで見る</li></ul><p><span class="move">煩熱：</span>T強攻撃＋火傷。バフ。</p></article>
+   </div>
+   <aside class="figrail" data-open="2"><h2>常時表示｜攻略図</h2><figure class="mini"><img src="" data-file="2_乱火琵琶_1.png" alt="乱火と琵琶"><figcaption>乱火・琵琶</figcaption></figure><figure class="mini"><img src="" data-file="2_般若湯_1.png" alt="般若湯1"><figcaption>般若湯 1</figcaption></figure><figure class="mini"><img src="" data-file="2_般若湯_2.png" alt="般若湯2"><figcaption>般若湯 2</figcaption></figure><figure class="mini"><img src="" data-file="2_変現呪珠.png" alt="変現呪珠"><figcaption>変現呪珠</figcaption></figure><figure class="mini"><img src="" data-file="2_乱火エクサ_2回目.png" alt="乱火の印2回目 エクサ"><figcaption>乱火の印2回目（エクサ）</figcaption></figure></aside>
+  </div>
+ </section>
+
+ <section class="boss b3" id="boss3">
+  <div class="bhead"><span class="num">03</span><span class="name">怨霊モウコ</span><span class="rule"><strong class="fire">火＝外</strong>／<strong class="water">水＝内</strong>　270度は線対象の向き基準</span><button class="pics" data-gallery="3">▧ 攻略図 4枚</button></div>
+  <div class="board hasfig">
+   <div class="col">
+    <article class="card"><h2>霞三段　<span class="role">基本則</span></h2><p>頭上予兆の色で3回の安置を判断。</p><ul><li><span class="fire">火＝外</span>（タゲサ内が円で潰れる）</li><li><span class="water">水＝内</span>（ドーナツ）</li></ul><p>1発目は見て動く。<strong class="then">2・3発目だけ覚える</strong>。カメラを回す。</p></article>
+    <article class="card grow"><h2>赤帝 → 祈請 → 居合</h2><div class="flow"><span class="step">赤帝：外</span><span class="arrow">→</span><span class="step">×字＋南北横一閃</span><span class="arrow">→</span><span class="step">ペア/散開</span></div><p>線対象の向き基準で270度。<strong class="safe">赤帝安置側へ向きを調整</strong>し、角の安置で処理。</p><p>祈請：D＋T/Hのペア頭割り、または一人受け散開。</p></article>
+   </div>
+   <div class="col">
+    <article class="card grow"><h2>幻影呼び①</h2><p>巨腕2体 → 安置2ヶ所。近間/遠間で線担当が逆転。</p><ul><li><b>近間当て：</b>ボスに近い2人がバインド。線担当は安置外、無職は内側</li><li><b>遠間当て：</b>役割を逆にする</li><li>無職はバインド解除後、2発目安置へ</li><li>居合二段の1発目は<strong class="then">下確定</strong></li><li>線持ち：<span class="fire">赤は外</span>／<span class="water">青は内</span></li></ul><p class="danger">線を無職へ当てない。</p></article>
+   </div>
+   <div class="col">
+    <article class="card"><h2>青帝 → 霞三段</h2><p><span class="water">青帝＝内</span>。空閃刃は内→外へ展開。直後の霞三段も同時に見る。</p></article>
+    <article class="card grow"><h2>屍兵 → 幻影呼び②</h2><div class="flow"><span class="step">青い矢の着弾点で安置2択</span><span class="arrow">→</span><span class="step">2ペアで背を向ける</span></div><ul><li>幻影4体から全員へ線</li><li>居合二段：<b>1発目＝背面側</b></li><li>2発目＝中心側。左右も判別</li></ul><p><span class="move">剣気解放：</span>全体軽減。<br><span class="move">胴薙ぎ：</span>T強攻撃、バフ。</p></article>
+   </div>
+   <aside class="figrail" data-open="3"><h2>常時表示｜攻略図</h2><figure class="mini"><img src="" data-file="3_赤帝居合.png" alt="赤帝居合"><figcaption>赤帝・居合</figcaption></figure><figure class="mini"><img src="" data-file="3_幻影呼び1_1.png" alt="幻影呼び1"><figcaption>幻影呼び① 1</figcaption></figure><figure class="mini"><img src="" data-file="3_幻影呼び1_2.png" alt="幻影呼び1"><figcaption>幻影呼び① 2</figcaption></figure><figure class="mini"><img src="" data-file="3_幻影呼び2.png" alt="幻影呼び2"><figcaption>幻影呼び②</figcaption></figure></aside>
+  </div>
+ </section>
+</main>
+<div class="footerhint">1 / 2 / 3 キーでも切替　・　印刷時は3ページ</div>
+<aside class="gallery" id="gallery" aria-modal="true" aria-label="攻略画像">
+ <div class="ghead"><h2 id="gtitle">攻略図</h2><span>画像をクリックすると拡大</span><button class="close" id="gclose">閉じる　Esc</button></div>
+ <div class="grid" id="ggrid"></div>
+</aside>
+<script>
+const tabs=[...document.querySelectorAll('.tab')], bosses=[...document.querySelectorAll('.boss')];
+function show(id){tabs.forEach(x=>x.classList.toggle('active',x.dataset.id===id));bosses.forEach(x=>x.classList.toggle('active',x.id==='boss'+id));history.replaceState(null,'','#boss'+id)}
+tabs.forEach(x=>x.addEventListener('click',()=>show(x.dataset.id)));
+const imageSets={
+  0:[['assets/rokkon/01-gourai-trash-map.png','ゴウライ道中・雑魚の釣り位置']],
+  1:[['assets/rokkon/02-shishio-kasumigui-1.png','霞食い 1'],['assets/rokkon/03-shishio-kasumigui-2.png','霞食い 2'],['assets/rokkon/04-shishio-kasumigui-3.png','霞食い 3'],['assets/rokkon/05-shishio-kasumigui-4.png','霞食い 4'],['assets/rokkon/06-shishio-jusei-1.png','不気味な呪声 1'],['assets/rokkon/07-shishio-jusei-2.png','不気味な呪声 2'],['assets/rokkon/08-shishio-uzurai-1.png','渦雷の連舞 1'],['assets/rokkon/09-shishio-uzurai-2.png','渦雷の連舞 2'],['assets/rokkon/10-shishio-uzurai-3.png','渦雷の連舞 3'],['assets/rokkon/11-shishio-uzurai-4.png','渦雷の連舞 4']],
+  2:[['assets/rokkon/12-gourai-ranka-biwa-1.png','乱火・琵琶 1'],['assets/rokkon/13-gourai-ranka-biwa-2.png','乱火・琵琶 2'],['assets/rokkon/14-gourai-hannyatou-1.png','般若湯 1'],['assets/rokkon/15-gourai-hannyatou-2.png','般若湯 2'],['assets/rokkon/16-gourai-hengen-juju-poshiume.png','変現呪珠（ぽしうめ式）'],['assets/rokkon/17-gourai-ranka2-exaflare.png','乱火の印2回目（エクサ）']],
+  3:[['assets/rokkon/18-mouko-sekitei-iai.png','赤帝剣気・居合'],['assets/rokkon/19-mouko-genei1-a.png','幻影呼び① 1'],['assets/rokkon/20-mouko-genei1-b.png','幻影呼び① 2'],['assets/rokkon/21-mouko-genei2.png','幻影呼び②']]
+};
+const embeddedImages={
+ '2_道中雑魚.png':imageSets[0][0][0],
+ '1_霞食い_1.png':imageSets[1][0][0],'1_霞食い_3.png':imageSets[1][2][0],
+ '1_不気味な呪声_1.png':imageSets[1][4][0],'1_渦雷の連舞_1.png':imageSets[1][6][0],
+ '2_乱火琵琶_1.png':imageSets[2][0][0],'2_般若湯_1.png':imageSets[2][2][0],
+ '2_般若湯_2.png':imageSets[2][3][0],'2_変現呪珠.png':imageSets[2][4][0],'2_乱火エクサ_2回目.png':imageSets[2][5][0],
+ '3_赤帝居合.png':imageSets[3][0][0],'3_幻影呼び1_1.png':imageSets[3][1][0],
+ '3_幻影呼び1_2.png':imageSets[3][2][0],'3_幻影呼び2.png':imageSets[3][3][0]
+};
+document.querySelectorAll('img[data-file]').forEach(img=>img.src=embeddedImages[img.dataset.file]);
+const gallery=document.getElementById('gallery'),grid=document.getElementById('ggrid');
+function openGallery(id){document.getElementById('gtitle').textContent=document.querySelector('#boss'+id+' .name').textContent+'｜攻略図';grid.innerHTML=imageSets[id].map(([file,cap])=>`<figure class="shot"><img src="${file}" alt="${cap}"><figcaption>${cap}</figcaption></figure>`).join('');gallery.classList.add('open');grid.querySelectorAll('img').forEach(img=>img.onclick=()=>{const shot=img.closest('.shot');if(gallery.classList.contains('zoom')){gallery.classList.remove('zoom');shot.classList.remove('selected')}else{gallery.classList.add('zoom');shot.classList.add('selected')}})}
+function closeGallery(){gallery.classList.remove('open','zoom');grid.innerHTML=''}
+document.querySelectorAll('.pics').forEach(x=>x.addEventListener('click',()=>openGallery(x.dataset.gallery)));document.getElementById('gclose').onclick=closeGallery;
+document.querySelectorAll('.figrail').forEach(x=>x.addEventListener('click',()=>openGallery(x.dataset.open)));
+addEventListener('keydown',e=>{if(e.key==='Escape'&&gallery.classList.contains('open'))closeGallery();else if(['0','1','2','3'].includes(e.key)&&!gallery.classList.contains('open'))show(e.key)});
+const initial=location.hash.match(/^#boss([0123])$/);if(initial)show(initial[1]);
+
+/* === カード内に攻略図を配置 === */
+document.addEventListener('DOMContentLoaded',function(){
+  var MAP=[
+    ['ゴウライまで',[[0,0]]],
+    ['六条放雷',[[1,0],[1,1],[1,2],[1,3]]],
+    ['輪・ユウキ',[[1,4],[1,5]]],
+    ['渦雷の連舞',[[1,6],[1,7],[1,8],[1,9]]],
+    ['岩火招来・琵琶',[[2,0],[2,1],[2,5]]],
+    ['般若湯',[[2,2],[2,3]]],
+    ['変現呪珠',[[2,4]]],
+    ['赤帝',[[3,0]]],
+    ['幻影呼び①',[[3,1],[3,2]]],
+    ['幻影呼び②',[[3,3]]]
+  ];
+  var lb=document.getElementById('lb2'),lbi=lb.querySelector('img');
+  function zoom(src){lbi.src=src;lb.classList.add('open');}
+  var cards=[].slice.call(document.querySelectorAll('.card'));
+  MAP.forEach(function(pair){
+    var key=pair[0],list=pair[1];
+    var card=cards.filter(function(c){var h=c.querySelector('h2');return h&&h.textContent.indexOf(key)>=0;})[0];
+    if(!card)return;
+    var box=document.createElement('div');box.className='cardshots';
+    list.forEach(function(ref){
+      var set=imageSets[ref[0]];if(!set||!set[ref[1]])return;
+      var src=set[ref[1]][0],cap=set[ref[1]][1];
+      var f=document.createElement('figure');
+      f.innerHTML='<img src="'+src+'" alt="'+cap+'"><figcaption>'+cap+'</figcaption>';
+      f.addEventListener('click',function(){zoom(src);});
+      box.appendChild(f);
+    });
+    if(box.children.length)card.appendChild(box);
+  });
+  /* 右端の常時表示レールは不要になるので撤去し、3カラムに戻す */
+  document.querySelectorAll('.figrail').forEach(function(el){el.remove();});
+  document.querySelectorAll('.board.hasfig').forEach(function(b){b.classList.remove('hasfig');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('open');});
+});
+</script>
+<div id="lb2" onclick="this.classList.remove('open')"><img alt=""></div>
+</body>
+</html>
