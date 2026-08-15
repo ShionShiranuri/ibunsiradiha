@@ -79,6 +79,13 @@ nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
   .shot img{height:auto}.timeline{white-space:normal;flex-wrap:wrap}.timeline b{position:static}
 }
 @media print{body{overflow:visible;background:#fff}.app{height:auto}.screen{display:block!important;break-after:page}nav,.meta,.foot{display:none}}
+
+@media(min-width:901px){
+  #screen0 .board{grid-template-columns:minmax(0,0.85fr) minmax(0,0.85fr) minmax(0,1.15fr)}
+  #screen1 .board{grid-template-columns:minmax(0,1.3fr) minmax(0,1.15fr) minmax(0,1.15fr)}
+  #screen2 .board{grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr) minmax(0,0.85fr)}
+  #screen3 .board{grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr) minmax(0,1.3fr)}
+}
 </style>
 </head>
 <body><main class="app">
@@ -378,5 +385,7 @@ document.querySelectorAll('[data-zoom]').forEach(a=>{
 });
 document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.classList.remove('open')};
 const h=location.hash.match(/^#boss([0-3])$/);if(h)show(h[1]);
+
+document.querySelectorAll('.shots').forEach(function(g){var c=g.children.length;var n=(c===4)?2:(c>=5?3:Math.min(c,3));g.style.gridTemplateColumns='repeat('+n+',minmax(0,1fr))';});
 </script>
 </body></html>
